@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Watu Lab</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <!-- Fonts: Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons: FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            black: '#050505',
+                            dark: '#0a0a0a',
+                            grey: '#1a1a1a',
+                            light: '#d4d4d4',
+                            white: '#ffffff'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(4px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .glass-nav {
+            background: rgba(5, 5, 5, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(26, 26, 26, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease-out;
+            /* Changed from intense cubic-bezier to smooth ease-out */
+        }
+
+        .glass-card:hover {
+            background: rgba(26, 26, 26, 0.6);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px) scale(1.01);
+            /* Reduced translation and scale */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            /* Softer shadow */
+        }
+
+        /* Tab Styles */
+        .tab-btn {
+            position: relative;
+            padding: 10px 20px;
+            color: #666;
+            transition: color 0.3s ease;
+            font-size: 1.125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 300;
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #fff;
+            transition: width 0.3s ease;
+        }
+
+        .tab-btn.active::after {
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="pt-24">
+
+    <!-- Navbar -->
+    <nav class="glass-nav fixed w-full z-40 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Back Button -->
+                <div class="flex-shrink-0 flex items-center gap-3 opacity-0 transition-all duration-1000 ease-out -translate-x-4 delay-500"
+                    id="back-btn-container">
+                    <a href="watu.html" class="flex items-center gap-3 group">
+                        <div
+                            class="h-10 w-10 border border-white/20 rounded-full flex items-center justify-center overflow-hidden bg-brand-grey transition-transform group-hover:-translate-x-1">
+                            <i class="fas fa-arrow-left text-sm"></i>
+                        </div>
+                        <span
+                            class="font-bold text-xl tracking-tight text-white group-hover:text-gray-300 transition-colors"
+                            data-key="back_home">Back to Home</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center px-4 py-12 relative z-10 w-full max-w-6xl mx-auto">
+
+        <!-- Header -->
+        <div class="text-center mb-16 opacity-0 transition-all duration-1000 ease-out translate-y-4"
+            id="header-container">
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 tracking-tighter" data-key="title">Our Projects</h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto font-light" data-key="subtitle">Showcasing the
+                digital excellence built at Watu Lab.</p>
+        </div>
+
+        <!-- Project Tabs -->
+        <div class="w-full flex justify-center gap-8 mb-12 border-b border-gray-800 pb-2 opacity-0 transition-all duration-1000 ease-out translate-y-4 delay-200"
+            id="tabs-container">
+            <button onclick="switchTab('ongoing')" id="btn-ongoing" class="tab-btn active" data-key="tab_ongoing">In
+                Progress</button>
+            <button onclick="switchTab('market')" id="btn-market" class="tab-btn" data-key="tab_market">On
+                Market</button>
+        </div>
+
+        <!-- Tabs Content Container -->
+        <div class="w-full relative min-h-[400px] opacity-0 transition-all duration-1000 ease-out translate-y-4 delay-300"
+            id="projects-container">
+
+            <!-- Ongoing Projects Tab -->
+            <div id="content-ongoing" class="tab-content active w-full">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Ongoing Project 1 -->
+                    <div class="glass-card rounded-2xl overflow-hidden group">
+                        <div
+                            class="h-48 bg-gray-900 border-b border-white/5 flex items-center justify-center relative overflow-hidden">
+                            <i
+                                class="fas fa-code text-5xl text-gray-700 group-hover:scale-110 transition-transform duration-500"></i>
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                            <span
+                                class="absolute bottom-3 left-4 text-xs font-bold uppercase tracking-widest text-brand-light bg-black/50 px-2 py-1 rounded backdrop-blur"
+                                data-key="badge_web">Web App</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 text-white" data-key="proj_1_title">E-Commerce Dashboard
+                            </h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4" data-key="proj_1_desc">A complete
+                                dashboard solution for retailers in East Africa, focusing on hyper-fast inventory sync.
+                            </p>
+                            <div class="flex items-center gap-2 text-xs text-yellow-500 font-mono tracking-wider">
+                                <i class="fas fa-hammer"></i>
+                                <span data-key="status_dev">Development (60%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ongoing Project 2 -->
+                    <div class="glass-card rounded-2xl overflow-hidden group">
+                        <div
+                            class="h-48 bg-gray-900 border-b border-white/5 flex items-center justify-center relative overflow-hidden">
+                            <i
+                                class="fas fa-mobile-alt text-5xl text-gray-700 group-hover:scale-110 transition-transform duration-500"></i>
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                            <span
+                                class="absolute bottom-3 left-4 text-xs font-bold uppercase tracking-widest text-brand-light bg-black/50 px-2 py-1 rounded backdrop-blur"
+                                data-key="badge_mobile">Mobile App</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 text-white" data-key="proj_2_title">Logistics Tracker</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4" data-key="proj_2_desc">Real-time GPS
+                                tracking solution aimed at local courier businesses with offline-first capabilities.</p>
+                            <div class="flex items-center gap-2 text-xs text-yellow-500 font-mono tracking-wider">
+                                <i class="fas fa-hammer"></i>
+                                <span data-key="status_beta">Beta Testing</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- On Market Projects Tab -->
+            <div id="content-market" class="tab-content w-full">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Market Project 1 -->
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col h-full group">
+                        <div
+                            class="h-48 bg-gray-900 border-b border-white/5 flex items-center justify-center relative overflow-hidden">
+                            <i
+                                class="fab fa-android text-5xl text-green-500 group-hover:scale-110 transition-transform duration-500"></i>
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                            <span
+                                class="absolute top-4 right-4 text-xs font-bold text-white bg-green-500/20 border border-green-500 px-2 py-1 rounded-full backdrop-blur">Live</span>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="text-xl font-bold mb-2 text-white" data-key="proj_3_title">Afya Connect</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-grow" data-key="proj_3_desc">
+                                Connecting patients to specialized practitioners instantly. Available on Android
+                                devices.</p>
+
+                            <!-- Links -->
+                            <div class="flex flex-col gap-3 mt-auto">
+                                <a href="#"
+                                    class="flex items-center justify-center gap-2 w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors border border-white/10 group/btn">
+                                    <i class="fab fa-google-play group-hover/btn:text-green-400 transition-colors"></i>
+                                    <span class="font-bold text-sm" data-key="btn_play">Play Store</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Project 2 -->
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col h-full group">
+                        <div
+                            class="h-48 bg-gray-900 border-b border-white/5 flex items-center justify-center relative overflow-hidden">
+                            <i
+                                class="fab fa-apple text-5xl text-gray-300 group-hover:scale-110 transition-transform duration-500"></i>
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                            <span
+                                class="absolute top-4 right-4 text-xs font-bold text-white bg-green-500/20 border border-green-500 px-2 py-1 rounded-full backdrop-blur">Live</span>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="text-xl font-bold mb-2 text-white" data-key="proj_4_title">Safari Sync iOS</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-grow" data-key="proj_4_desc">The
+                                premier trip planning tool for Tanzanian Safaris, crafted natively for iOS.</p>
+
+                            <!-- Links -->
+                            <div class="flex flex-col gap-3 mt-auto">
+                                <a href="#"
+                                    class="flex items-center justify-center gap-2 w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors border border-white/10 group/btn">
+                                    <i class="fab fa-apple text-lg"></i>
+                                    <span class="font-bold text-sm" data-key="btn_appstore">App Store</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Project 3 (PC App) -->
+                    <div class="glass-card rounded-2xl overflow-hidden flex flex-col h-full group">
+                        <div
+                            class="h-48 bg-gray-900 border-b border-white/5 flex items-center justify-center relative overflow-hidden">
+                            <i
+                                class="fab fa-windows text-5xl text-blue-400 group-hover:scale-110 transition-transform duration-500"></i>
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+                            <span
+                                class="absolute bottom-3 left-4 text-xs font-bold uppercase tracking-widest text-brand-light bg-black/50 px-2 py-1 rounded backdrop-blur"
+                                data-key="badge_pc">PC App</span>
+                            <span
+                                class="absolute top-4 right-4 text-xs font-bold text-white bg-green-500/20 border border-green-500 px-2 py-1 rounded-full backdrop-blur">Live</span>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="text-xl font-bold mb-2 text-white" data-key="proj_5_title">RetailMaster Pro</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-grow" data-key="proj_5_desc">
+                                Enterprise-grade Point of Sale system built natively for Windows desktop environments.
+                            </p>
+
+                            <!-- Links -->
+                            <div class="flex flex-col gap-3 mt-auto">
+                                <a href="#"
+                                    class="flex items-center justify-center gap-2 w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors border border-white/10 group/btn">
+                                    <i class="fab fa-windows text-blue-400 text-lg"></i>
+                                    <span class="font-bold text-sm" data-key="btn_download">Download App</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-gray-900 py-8 relative z-10 bg-black mt-auto w-full">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm">
+            <p>&copy; 2026 Watu Lab. All Rights Reserved.</p>
+            <a href="privacy.html" class="hover:text-white transition-colors mt-4 md:mt-0"
+                data-key="footer_privacy">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            en: {
+                back_home: "Back to Home",
+                title: "Our Projects",
+                subtitle: "Showcasing the digital excellence built at Watu Lab.",
+                tab_ongoing: "In Progress",
+                tab_market: "On Market",
+                footer_privacy: "Privacy Policy",
+
+                // Badges/Status
+                badge_web: "Web App",
+                badge_mobile: "Mobile App",
+                badge_pc: "PC App",
+                status_dev: "Development (60%)",
+                status_beta: "Beta Testing",
+
+                // Content
+                proj_1_title: "E-Commerce Dashboard",
+                proj_1_desc: "A complete dashboard solution for retailers in East Africa, focusing on hyper-fast inventory sync.",
+                proj_2_title: "Logistics Tracker",
+                proj_2_desc: "Real-time GPS tracking solution aimed at local courier businesses with offline-first capabilities.",
+                proj_3_title: "Afya Connect",
+                proj_3_desc: "Connecting patients to specialized practitioners instantly. Available on Android devices.",
+                proj_4_title: "Safari Sync iOS",
+                proj_4_desc: "The premier trip planning tool for Tanzanian Safaris, crafted natively for iOS.",
+                proj_5_title: "RetailMaster Pro",
+                proj_5_desc: "Enterprise-grade Point of Sale system built natively for Windows desktop environments.",
+
+                // Buttons
+                btn_play: "Play Store",
+                btn_appstore: "App Store",
+                btn_download: "Download App"
+            },
+            sw: {
+                back_home: "Rudi Mwanzo",
+                title: "Miradi Yetu",
+                subtitle: "Ukuaji wa kidijitali unaofanywa na Watu Lab.",
+                tab_ongoing: "Inayoendelea",
+                tab_market: "Iliyokamilika",
+                footer_privacy: "Sera ya Faragha",
+
+                // Badges/Status
+                badge_web: "Tovuti",
+                badge_mobile: "Programu ya Simu",
+                badge_pc: "Programu ya Kompyuta",
+                status_dev: "Ipo Kwenye Ujenzi (60%)",
+                status_beta: "Majadiliano (Beta)",
+
+                // Content
+                proj_1_title: "Dashibodi ya Biashara",
+                proj_1_desc: "Suluhisho kamili la dashibodi kwa wauzaji Afrika Mashariki, ikilenga kasi ya kuhifadhi hesabu.",
+                proj_2_title: "Mfumo wa Usafirishaji",
+                proj_2_desc: "Kufuatilia GPS muda halisi kwa wafanyabiashara wa usafirishaji hata bila intaneti.",
+                proj_3_title: "Afya Connect",
+                proj_3_desc: "Kuunganisha wagonjwa na wataalam papo hapo. Inapatikana kwa simu za Android.",
+                proj_4_title: "Safari Sync iOS",
+                proj_4_desc: "Zana bora ya kupanga safari zako za utalii Tanzania, imejengwa kwa ajili ya iOS.",
+                proj_5_title: "RetailMaster Pro",
+                proj_5_desc: "Mfumo wa daraja la juu wa Point of Sale uliojengwa mahususi kwa kompyuta za Windows.",
+
+                // Buttons
+                btn_play: "Play Store",
+                btn_appstore: "App Store",
+                btn_download: "Pakua App"
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const lang = localStorage.getItem('watu_lang') || 'en';
+
+            // Apply translations
+            const elements = document.querySelectorAll('[data-key]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Update title
+            document.title = translations[lang].title + " - Watu Lab";
+
+            // Fade in header, tabs, and content sequentially
+            setTimeout(() => {
+                const backBtn = document.getElementById('back-btn-container');
+                if (backBtn) {
+                    backBtn.style.opacity = '1';
+                    backBtn.classList.remove('-translate-x-4');
+                }
+
+                const header = document.getElementById('header-container');
+                if (header) {
+                    header.style.opacity = '1';
+                    header.classList.remove('translate-y-4');
+                }
+
+                const tabs = document.getElementById('tabs-container');
+                if (tabs) {
+                    tabs.style.opacity = '1';
+                    tabs.classList.remove('translate-y-4');
+                }
+
+                const projects = document.getElementById('projects-container');
+                if (projects) {
+                    projects.style.opacity = '1';
+                    projects.classList.remove('translate-y-4');
+                }
+            }, 100);
+
+            // 2. Intercept Internal Link Clicks for Fade In Transition
+            const pageTransition = document.getElementById('page-transition');
+            const transitionText = document.getElementById('transition-text');
+
+            if (pageTransition && transitionText) {
+                // Initial Page Load (Fade Out overlay) - Added here since it was missing
+                transitionText.classList.add('show');
+
+                setTimeout(() => {
+                    transitionText.classList.remove('show');
+                    pageTransition.classList.add('fade-out');
+                }, 600); // How long the text stays on screen
+
+                document.body.addEventListener('click', function (e) {
+                    const anchor = e.target.closest('a');
+                    if (anchor) {
+                        const targetUrl = anchor.getAttribute('href');
+                        const target = anchor.getAttribute('target');
+
+                        // Only intercept if it's an internal link
+                        if (targetUrl && (targetUrl.endsWith('.html') || targetUrl.includes('.html')) && target !== '_blank' && !targetUrl.startsWith('#')) {
+                            e.preventDefault(); // Stop immediate navigation
+
+                            // Bring up overlay
+                            pageTransition.classList.remove('fade-out');
+                            pageTransition.classList.add('fade-in');
+
+                            // Show text
+                            setTimeout(() => {
+                                transitionText.classList.add('show');
+                            }, 150);
+
+                            // Wait for transition to finish, then navigate
+                            setTimeout(() => {
+                                window.location.href = targetUrl;
+                            }, 800); // Overall transition time before redirect
+                        }
+                    }
+                });
+            }
+        });
+
+        // Ensure Safari back/forward browser buttons trigger a clean reload
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                const pageTransition = document.getElementById('page-transition');
+                if (pageTransition) pageTransition.classList.add('fade-out');
+            }
+        });
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Remove active class from all buttons and content
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active class to clicked button and corresponding content
+            document.getElementById(`btn-${tabId}`).classList.add('active');
+            document.getElementById(`content-${tabId}`).classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
